@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('blogs', '0002_rename_user_comment_author_rename_user_like_author'),
+        ("blogs", "0002_rename_user_comment_author_rename_user_like_author"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='post',
-            name='category',
-            field=models.CharField(default='Blog', max_length=100, null=True),
+            model_name="post",
+            name="category",
+            field=models.CharField(default="Blog", max_length=100, null=True),
         ),
     ]

@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Post, Comment, Like, Tag
+
+from .models import Comment, Like, Post, Tag
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -25,7 +26,7 @@ class LikeSerializer(serializers.ModelSerializer):
 class TagSerialzer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = '__all__'
+        fields = "__all__"
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -56,8 +57,8 @@ class PostSerializer(serializers.ModelSerializer):
         return obj.likes.count()
 
     def create(self, validated_data):
-        tags_data = self.initial_data.get('tags', [])
-        author = validated_data.pop('author')
+        tags_data = self.initial_data.get("tags", [])
+        author = validated_data.pop("author")
         post = Post.objects.create(author=author, **validated_data)
 
         for tag_name in tags_data:
@@ -65,15 +66,15 @@ class PostSerializer(serializers.ModelSerializer):
             post.tags.add(tag)
 
         return post
-    
+
     def update(self, instance, validated_data):
         # Extract tags from initial data
-        tags_data = self.initial_data.get('tags', [])
+        tags_data = self.initial_data.get("tags", [])
 
         # Update standard fields
-        instance.title = validated_data.get('title', instance.title)
-        instance.content = validated_data.get('content', instance.content)
-        instance.category = validated_data.get('category', instance.category)
+        instance.title = validated_data.get("title", instance.title)
+        instance.content = validated_data.get("content", instance.content)
+        instance.category = validated_data.get("category", instance.category)
         instance.save()
 
         # Update tags

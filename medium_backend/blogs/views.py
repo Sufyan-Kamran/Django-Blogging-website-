@@ -1,12 +1,13 @@
+from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import status, generics, filters
-from .models import Post, Comment, Like
+from rest_framework import filters, generics, status
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import PostSerializer, CommentSerializer, LikeSerializer
+
 from .filters import PostFilter
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from django.shortcuts import get_object_or_404
+from .models import Comment, Like, Post
+from .serializers import CommentSerializer, LikeSerializer, PostSerializer
 
 
 # handling with apiview
@@ -159,4 +160,3 @@ class PostSearchView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_class = PostFilter
     search_fields = ["title", "content", "tags__name"]
-

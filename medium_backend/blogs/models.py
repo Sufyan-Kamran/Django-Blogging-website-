@@ -1,7 +1,6 @@
-from django.db import models
 from django.conf import settings
+from django.db import models
 from django.utils import timezone
-
 
 
 class Tag(models.Model):
@@ -23,7 +22,7 @@ class Post(models.Model):
     content = models.TextField()
     category = models.CharField(max_length=100, default="Blog", null=True)
     tags = models.ManyToManyField(Tag, related_name="posts", blank=True)
-    image = models.ImageField(upload_to="blog_images/", blank=True, null=True) 
+    image = models.ImageField(upload_to="blog_images/", blank=True, null=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 

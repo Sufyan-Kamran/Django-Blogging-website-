@@ -7,18 +7,18 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('blogs', '0004_alter_like_unique_together'),
+        ("blogs", "0004_alter_like_unique_together"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='like',
-            old_name='post',
-            new_name='post_id',
+            model_name="like",
+            old_name="post",
+            new_name="post_id",
         ),
         migrations.AlterUniqueTogether(
-            name='like',
-            unique_together={('author', 'post_id')},
+            name="like",
+            unique_together={("author", "post_id")},
         ),
     ]

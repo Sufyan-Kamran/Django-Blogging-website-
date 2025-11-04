@@ -7,13 +7,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0002_user_groups_user_is_superuser_user_user_permissions'),
+        ("users", "0002_user_groups_user_is_superuser_user_user_permissions"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='user',
-            name='updated_at',
+            model_name="user",
+            name="updated_at",
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
     ]

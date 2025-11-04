@@ -1,6 +1,7 @@
 from django.contrib.auth.password_validation import validate_password
-from .models import User
 from rest_framework import serializers
+
+from .models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -35,11 +36,10 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         # Remove password2 because the User model doesn't have it
-        validated_data.pop('confirm_password')
+        validated_data.pop("confirm_password")
         # Create the user using Django's create_user method (handles password hashing)
         user = User.objects.create_user(**validated_data)
         return user
-    
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
