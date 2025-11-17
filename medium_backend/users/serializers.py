@@ -22,17 +22,12 @@ class UserSerializer(serializers.ModelSerializer):
             "password",
             "confirm_password",
         )
-        extra_kwargs = {
-            "first_name": {"required": False},
-            "last_name": {"required": False},
-            "dob": {"required": False},
-            "gender": {"required": False},
-        }
 
-    def password_confirmation(self, validate_data):
+    def validate(self, attrs):
         if attrs["password"] != attrs["confirm_password"]:
             raise serializers.ValidationError("Password must be same")
-        return attrs
+
+        return True
 
     def create(self, validated_data):
         # Remove password2 because the User model doesn't have it
@@ -45,4 +40,38 @@ class UserSerializer(serializers.ModelSerializer):
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", "email", "is_active"]
+        fields = [
+            "id",
+            "last_login",
+            "email",
+            "username",
+            "first_name",
+            "last_name",
+            "dob",
+            "gender",
+            "created_at",
+            "updated_at",
+            "is_active",
+            "is_staff",
+        ]
+
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "email",
+            "username",
+            "first_name",
+            "last_name",
+            "dob",
+            "gender",
+            "updated_at",
+        ]
+        read_only_fields = ["id"]
+
+    def update(self, instance, validated_data):
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+        instance.save()
+        return instance

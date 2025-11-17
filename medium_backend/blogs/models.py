@@ -23,6 +23,7 @@ class Post(models.Model):
     category = models.CharField(max_length=100, default="Blog", null=True)
     tags = models.ManyToManyField(Tag, related_name="posts", blank=True)
     image = models.ImageField(upload_to="blog_images/", blank=True, null=True)
+    views = models.IntegerField(max_length=11, null=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -37,6 +38,7 @@ class Comment(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     comment = models.TextField()
     created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f"Comment by {self.author.username} on {self.post.title}"

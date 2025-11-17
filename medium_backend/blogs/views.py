@@ -1,3 +1,6 @@
+import json
+
+from common.utils import handle_tags
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, generics, status
@@ -22,8 +25,16 @@ class PostView(APIView):
         return [AllowAny()]
 
     def get(self, request, post_id=None, *args, **kwargs):
+
         if post_id:
             queryset = Post.objects.get(id=post_id)
+
+            if not queryset.views:
+                queryset.views = 1
+            else:
+                queryset.views += 1
+
+            queryset.save()
             post_serializer = PostSerializer(queryset, many=False)
             return Response(post_serializer.data)
 
@@ -33,7 +44,8 @@ class PostView(APIView):
         return Response(post_serializer.data)
 
     def post(self, request):
-        data = request.data.copy()
+        data = request.data
+
         serializer = PostSerializer(data=data)
 
         if serializer.is_valid():
@@ -45,12 +57,21 @@ class PostView(APIView):
     def patch(self, request, post_id):
         post = get_object_or_404(Post, id=post_id)
 
+        # Handle image file if present
+        if "image" in request.FILES:
+
+            """This will handle the image file first it check is there any image
+            then it delete the previous image then set the new image"""
+
+            if post.image:
+                post.image.delete(save=False)
+
         if post.author != request.user:
             return Response({"error": "You can only update your own post."}, status=403)
 
-        data = request.data.copy()
+        print("tags : ", request.data.get("tags", None), "\n")
 
-        serializer = PostSerializer(post, data=data, partial=True)
+        serializer = PostSerializer(post, data=request.data, partial=True)
 
         if serializer.is_valid():
             serializer.save()
@@ -119,6 +140,8 @@ class CommentView(APIView):
 
 
 class LikeView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         data = request.data.copy()
         data["author"] = request.user.id
@@ -136,6 +159,7 @@ class LikeView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
+        
         post_id = request.data.get("post_id")
         like = Like.objects.filter(post_id=post_id, author=request.user).first()
 
