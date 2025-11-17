@@ -46,17 +46,13 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "users.middleware.JWTRefreshMiddleware"
+    "users.middleware.JWTRefreshMiddleware",
 ]
 
 
 # CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000"
-    
-]
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"]
 
 ROOT_URLCONF = "medium_backend.urls"
 
@@ -133,7 +129,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Restframework manual
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "users.authentication.CookieJWTAuthentication",   # MUST BE FIRST
+        "users.authentication.CookieJWTAuthentication",  # MUST BE FIRST
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.AllowAny",),

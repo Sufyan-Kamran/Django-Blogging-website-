@@ -1,12 +1,12 @@
-from django.utils.deprecation import MiddlewareMixin
-from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from django.http import JsonResponse
+from django.utils.deprecation import MiddlewareMixin
+from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 
 
 class JWTRefreshMiddleware(MiddlewareMixin):
     def process_request(self, request):
         access_token = request.COOKIES.get("access_token")
-        
+
         if not access_token:
             return None
 

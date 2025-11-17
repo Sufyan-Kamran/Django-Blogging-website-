@@ -159,7 +159,7 @@ class LikeView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
-        
+
         post_id = request.data.get("post_id")
         like = Like.objects.filter(post_id=post_id, author=request.user).first()
 
